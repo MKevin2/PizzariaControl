@@ -1,0 +1,12 @@
+
+Opção: Pedido para Entrega 
+Cliente: Matheus 
+CPF: 26737736 
+CEP: 16272 
+Cidade: S�o 
+Logradouro: Paulo 
+Número: 145 
+Complemento: dhdjf 
+Categoria: Pizzas Doces 
+Item: Pizza Prestígio - R$55.00
+Forma de pagamento: Pix
