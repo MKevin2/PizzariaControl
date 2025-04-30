@@ -1,6 +1,6 @@
 # PizzaControl!
 
-<img src="https://github.com/MKevin2/PizzariaControl/blob/main/img/pizzalogo.png" width="218px" height="389px"> <img src="https://github.com/MKevin2/PizzariaControl/blob/main/img/page2.png" width="218px" height="389px">
+<img src="https://github.com/MKevin2/PizzariaControl/blob/main/img/pizzalogo.png" width="218px" height="389px"> <img src="https://github.com/MKevin2/PizzariaControl/blob/main/img/page2.png" width="218px" height="389px"> <img src="https://github.com/MKevin2/PizzariaControl/blob/main/img/page3.png" width="218px" height="389px"> <img src="https://github.com/MKevin2/PizzariaControl/blob/main/img/page4.png" width="218px" height="389px">
 
 ## Funções do Programa
 
