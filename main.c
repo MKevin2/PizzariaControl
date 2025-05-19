@@ -1,8 +1,52 @@
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
 
-#define CARRINHO_MAX 100 // Criando constantes
+#define CARRINHO_MAX 100 // Criando uma constante
 #define ITEM_TAMANHO 100
+
+int ApenasNumeros(char *str) {
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (!isdigit(str[i])) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+int CampoVazio(char *str) {
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (!isspace(str[i])) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+void lerStringNaoVazia(char *mensagem, char *destino, int tamanho) {
+    do {
+        printf("%s", mensagem);
+        fgets(destino, tamanho, stdin);
+        destino[strcspn(destino, "\n")] = '\0';
+
+        if (CampoVazio(destino)) {
+            printf("Campo obrigatório! Não pode estar vazio.\n");
+        }
+    } while (CampoVazio(destino));
+}
+
+void lerNumericoComTamanho(char *mensagem, char *destino, int tamanhoEsperado) {
+    do {
+        printf("%s", mensagem);
+        fgets(destino, tamanhoEsperado + 2, stdin); // +2 para '\n' e '\0'
+        destino[strcspn(destino, "\n")] = '\0';
+
+        if (!ApenasNumeros(destino) || strlen(destino) != tamanhoEsperado) {
+            printf("Digite somente números, (%d dígitos).\n", tamanhoEsperado);
+        }
+    } while (!ApenasNumeros(destino) || strlen(destino) != tamanhoEsperado);
+}
 
 int main(void) {
     FILE *pont_arq;
@@ -106,14 +150,10 @@ int main(void) {
     switch (tipo) {
         case 0:
             printf("\nOpção escolhida: Comer no restaurante\n");
-            printf("Digite seu nome: ");
-            fgets(nome, sizeof(nome), stdin);
-            nome[strcspn(nome, "\n")] = '\0';
+            lerStringNaoVazia("Digite seu nome: ", nome, sizeof(nome));
+            lerNumericoComTamanho("Digite seu CPF (apenas números): ", cpf, 11);
 
-            printf("Digite seu CPF (apenas números): ");
-            scanf("%s", cpf);
-
-            pont_arq = fopen("pedidos.txt", "a");
+            pont_arq = fopen("arquivo_teste.txt", "a");
             if (pont_arq == NULL) {
                 printf("Erro ao abrir o arquivo!\n");
                 return 1;
@@ -123,29 +163,29 @@ int main(void) {
             break;
         case 1:
             printf("\nOpção escolhida: Pedido para Entrega\n");
-            printf("Digite seu nome: ");
-            fgets(nome, sizeof(nome), stdin);
-            nome[strcspn(nome, "\n")] = '\0';
+            lerStringNaoVazia("Digite seu nome: ", nome, sizeof(nome));
+            lerNumericoComTamanho("Digite seu CPF (apenas números): ", cpf, 11);
 
-            printf("Digite seu CPF (apenas números): ");
-            scanf("%s", cpf);
+            lerNumericoComTamanho("Digite seu CEP: ", cep, 8);
+            lerStringNaoVazia("Digite sua Cidade: ", cidade, sizeof(cidade));
+            lerStringNaoVazia("Digite o Logradouro: ", logradouro, sizeof(logradouro));
+    
+            do {
+                printf("Número da Residência: ");
+                if (scanf("%d", &numero) != 1 || numero <= 0) {
+                    printf("Número inválido! Digite um número maior que 0.\n");
+                    while (getchar() != '\n');
+                    numero = 0; 
+                } else {
+                    while (getchar() != '\n');
+                }
+            } while (numero <= 0);
+    
+            printf("Digite o Complemento (opcional): ");
+            fgets(complemento, sizeof(complemento), stdin);
+            complemento[strcspn(complemento, "\n")] = '\0';
 
-            printf("Digite seu CEP: ");
-            scanf("%s", cep);
-
-            printf("Digite sua Cidade: ");
-            scanf("%s", cidade);
-
-            printf("Digite o Logradouro: ");
-            scanf("%s", logradouro);
-
-            printf("Número da Residência: ");
-            scanf("%d", &numero);
-
-            printf("Digite o Complemento: ");
-            scanf("%s", complemento);
-
-            pont_arq = fopen("pedidos.txt", "a");
+            pont_arq = fopen("arquivo_teste.txt", "a");
             if (pont_arq == NULL) {
                 printf("Erro ao abrir o arquivo!\n");
                 return 1;
@@ -214,7 +254,7 @@ int main(void) {
         }
 
         // Grava o item escolhido no arquivo
-        pont_arq = fopen("pedidos.txt", "a");
+        pont_arq = fopen("arquivo_teste.txt", "a");
         if (pont_arq == NULL) {
             printf("Não foi possível abrir o arquivo!\n");
             return 1;
@@ -280,7 +320,7 @@ int main(void) {
         scanf("%s", pagamento);
         
         // Reabre o arquivo para acrescentar a forma de pagamento
-        pont_arq = fopen("pedidos.txt", "a");
+        pont_arq = fopen("arquivo_teste.txt", "a");
         if (pont_arq == NULL) {
             printf("Erro ao abrir o arquivo!\n");
             return 1;
